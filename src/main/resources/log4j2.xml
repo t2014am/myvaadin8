@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <!--<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">-->
+    <Properties>
+        <Property name="basePath">G:/My_User_Files/my_projects/vaadin8dev/log4j2-logs</Property>
+        <!--<Property name="basePath">/Log4j2Example/logs</Property>-->
+        <Property name="logPattern">%-5p | %d{ddMMyy HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n</Property>
+    </Properties>
+    <Appenders>
+        <!-- File Appender -->
+        <File name="FILE" fileName="${basePath}/logfile.log" append="true">
+            <PatternLayout pattern="${logPattern}"/>
+        </File>
+        <!-- Console Appender -->
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <!--<PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>-->
+            <PatternLayout pattern="%highlight{${logPattern}}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.vaadin8.dev" level="trace"/>
+        <Root level="trace">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>
