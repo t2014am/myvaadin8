@@ -1,18 +1,19 @@
 package com.tamim.myvaadin8.heirarchy;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /*
  * SOURCE:
  * https://www.lavivienpost.com/build-hierarchy-tree/
  * */
 
 import java.util.List;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
 
 public class ReportToHierarchy {
 	static Map<Integer, EmployeeNode> employees;
