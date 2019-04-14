@@ -1,6 +1,7 @@
 package com.tamim.myvaadin8.heirarchy_dots;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DummyData {
@@ -22,5 +23,11 @@ public class DummyData {
 		theItems.add("myproject.button.stay");
 
 		return theItems;
+	}
+
+	public List<String> getDummyPackages() {
+		List<String> packages = Arrays.asList("com.project.server", "com.project.client", "com.project.client.util",
+				"com.project.client.util.some", "be.proj", "be.proj.util", "be.proj.test", "be.dirty.test");
+		return packages;
 	}
 }

@@ -2,27 +2,41 @@ package com.tamim.myvaadin8.heirarchy_dots;
 
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ParserTree {
+	private final Logger logger = LogManager.getLogger(this.getClass());
+
+	public Set<ItemNode> getItemsWithChildren(Set<ItemNode> rootItems, List<String> theFlatList) {
+		Set<ItemNode> itemsWithChildren = new HashSet<>();
+		for (ItemNode itemNode : rootItems) {
+			itemsWithChildren.add(getRoot(theFlatList, itemNode.getItem()));
+		}
+
+		return itemsWithChildren;
+	}
 
 	// public PackageInfo getRoot(List<String> packages) throws
 	// JsonProcessingException {
-	public PackageInfo getRoot(List<String> packages) {
-		Map<String, PackageInfo> map = new HashMap<>();
-
+	public ItemNode getRoot(List<String> packages, String rootItem) {
+		Map<String, ItemNode> map = new HashMap<>();
+		logger.warn(rootItem);
+		logger.warn(packages.toString());
 		String root = null;
-		String root1 = "be";
 		for (String packageName : packages) {
 			String[] split = packageName.split("\\.");
 //            System.out.println(Arrays.asList(split).toString());
 			for (int i = 0; i < split.length; i++) {
 				String singlePackage = split[i];
-				if (root1.equals(split[0])) {
+				if (rootItem.equals(split[0])) {
 					if (root == null) {
 						root = singlePackage;
 					}
-					map.computeIfAbsent(singlePackage, PackageInfo::new);
+//					map.computeIfAbsent(singlePackage, ItemNode::new);
+					map.computeIfAbsent(singlePackage, t -> new ItemNode(t));
 					if (i - 1 >= 0) {
-						PackageInfo currentPackage = map.get(singlePackage);
+						ItemNode currentPackage = map.get(singlePackage);
 						map.get(split[i - 1]).getChildren().add(currentPackage);
 					}
 				}
@@ -34,54 +48,13 @@ public class ParserTree {
 
 	// public static void main(String[] args) throws JsonProcessingException {
 	public static void main(String[] args) {
-		List<String> packages = Arrays.asList("com.project.server", "com.project.client", "com.project.client.util",
-				"com.project.client.util.some", "be.proj", "be.proj.util", "be.proj.test", "be.dirty.test");
+//		List<String> packages = Arrays.asList("com.project.server", "com.project.client", "com.project.client.util",
+//				"com.project.client.util.some", "be.proj", "be.proj.util", "be.proj.test", "be.dirty.test");
 
-		ParserTree parseTree = new ParserTree();
-		PackageInfo root = parseTree.getRoot(packages);
+//		ParserTree parseTree = new ParserTree();
+//		ItemNode root = parseTree.getRoot(packages);
 
-		System.out.println(root.toString());
-	}
-}
-
-class PackageInfo {
-
-	private String name;
-	private Set<PackageInfo> children;
-
-	public PackageInfo(String name) {
-		this.name = name;
-		children = new HashSet<>();
+//		System.out.println(root.toString());
 	}
 
-	public Set<PackageInfo> getChildren() {
-		return children;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		PackageInfo that = (PackageInfo) o;
-		return Objects.equals(name, that.name);
-	}
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash(name);
-	}
-
-	@Override
-	public String toString() {
-		return "PackageInfo{" + "name='" + name + '\'' + ", children=" + children + '}';
-	}
 }

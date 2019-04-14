@@ -2,6 +2,7 @@ package com.tamim.myvaadin8;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,10 @@ import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
@@ -30,13 +34,12 @@ public class HeirarchicalView extends VerticalLayout implements View {
 	@Override
 	public void enter(ViewChangeListener.ViewChangeEvent event) {
 		setSizeFull();
+		setMargin(true);
 
 		try {
 			ReportToHierarchy.readDataAndCreateMap();
-			rootItems.clear();
 			children.clear();
 			rootItems = ReportToHierarchy.getRootItems();
-
 			for (EmployeeNode e : rootItems) {
 				ReportToHierarchy.buildHierarchyTree(1, e);
 			}
@@ -47,14 +50,34 @@ public class HeirarchicalView extends VerticalLayout implements View {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		HorizontalLayout h = new HorizontalLayout();
+		h.addComponent(firstTreeEmployees());
+		h.addComponent(secondTree());
+		h.addComponent(thirdTree());
+		h.setSizeFull();
 
+		Label l = new Label("Hierarchical data processing");
+		l.addStyleNames("v-margin-bottom", "v-button-huge");
+		l.setDescription("just a heading, what else do you want? ");
+		addComponent(l);
+		setComponentAlignment(l, Alignment.TOP_CENTER);
+		addComponent(h);
+		setExpandRatio(h, 1F);
+	}
+
+	@Override
+	public void beforeClientResponse(boolean initial) {
+		super.beforeClientResponse(initial);
+//        Notification.show("beforeClientResponse",
+//                "The depth of the heirarchical tree is: " + ReportToHierarchy.getMaxDepth(),
+//                Notification.Type.HUMANIZED_MESSAGE).setDelayMsec(4000);
+	}
+
+	public Component firstTreeEmployees() {
 		Tree<EmployeeNode> employeesTree = new Tree<>();
 		employeesTree.setItemCaptionGenerator(EmployeeNode::getName);
-//        System.out.println(rootItems.toString());
-
 		TreeData<EmployeeNode> employeeNodeTreeData = new TreeData<>();
 		employeeNodeTreeData.addItems(rootItems, EmployeeNode::getSubordinates);
-//        employeeNodeTreeData.addRootItems(rootItems);
 
 		TreeDataProvider<EmployeeNode> employeeNodeTreeDataProvider = new TreeDataProvider<>(employeeNodeTreeData);
 
@@ -67,38 +90,20 @@ public class HeirarchicalView extends VerticalLayout implements View {
 
 		employeesTree.addItemClickListener(l -> {
 //            logger.warn(l.getItem().toString());
-			Notification.show("This is the caption", "You clicked: " + l.getItem().toString(),
+			Notification.show("This is the caption",
+					"You clicked: " + l.getItem().getName() + " with id: " + l.getItem().getId(),
 					Notification.Type.HUMANIZED_MESSAGE).setDelayMsec(2000);
 		});
 
-		HeirarchyDots heirarchyDots = new HeirarchyDots();
-
-		thirdTree();
-
-//        addComponent(employeesTree);
-		addComponent(secondTree());
-	}
-
-	@Override
-	public void beforeClientResponse(boolean initial) {
-		super.beforeClientResponse(initial);
-
-//        Notification.show("beforeClientResponse",
-//                "The depth of the heirarchical tree is: " + ReportToHierarchy.getMaxDepth(),
-//                Notification.Type.HUMANIZED_MESSAGE).setDelayMsec(4000);
-	}
-
-	public Component thirdTree() {
-		HeirarchyDotsV2 heirarchyDotsV2 = new HeirarchyDotsV2();
-
-		Tree<ItemNode> theTree = new Tree<>();
-
-		return theTree;
+		VerticalLayout v = new VerticalLayout();
+		v.addComponent(new Label("Heirarcy with a column with parent/supervisor"));
+		v.addComponent(employeesTree);
+		v.setMargin(false);
+		return v;
 	}
 
 	public Component secondTree() {
 		HeirarchyDots heirarchyDots = new HeirarchyDots();
-		ItemNode itemNode = heirarchyDots.getItemNode();
 		Set<ItemNode> itemNodeSet = heirarchyDots.getRootItems();
 
 		logger.warn(itemNodeSet.toString());
@@ -121,10 +126,43 @@ public class HeirarchicalView extends VerticalLayout implements View {
 
 		employeesTree.addItemClickListener(l -> {
 //            logger.warn(l.getItem().toString());
-			Notification.show("This is the caption", "You clicked: " + l.getItem().toString(),
+			Notification.show("This is the caption",
+					"You clicked: " + l.getItem().getItem() + " with id: " + l.getItem().getId(),
 					Notification.Type.HUMANIZED_MESSAGE).setDelayMsec(2000);
 		});
 
-		return employeesTree;
+		VerticalLayout v = new VerticalLayout();
+//		.addStyleNames("v-align-bottom", "v-botton-primary")
+		v.addComponent(new Label("Heirarcy with dots, FAILED TRY! "));
+		v.addComponent(employeesTree);
+		v.setMargin(false);
+		return v;
+	}
+
+	public Component thirdTree() {
+		HeirarchyDotsV2 heirarchyDotsV2 = new HeirarchyDotsV2();
+
+		Tree<ItemNode> theTree = new Tree<>();
+		theTree.setItemCaptionGenerator(ItemNode::getItem);
+		TreeData<ItemNode> employeeNodeTreeData = new TreeData<>();
+		Set<ItemNode> itemNodeSet = new HashSet<>();
+		itemNodeSet.addAll(heirarchyDotsV2.someMethod());
+		employeeNodeTreeData.addItems(itemNodeSet, ItemNode::getChildren);
+
+		TreeDataProvider<ItemNode> theTreeDataProvider = new TreeDataProvider<>(employeeNodeTreeData);
+
+		theTree.setDataProvider(theTreeDataProvider);
+		theTree.expandRecursively(itemNodeSet, 5);
+		theTree.addItemClickListener(l -> {
+			Notification.show("This is the caption",
+					"You clicked: " + l.getItem().getItem() + " with id: " + l.getItem().getId(),
+					Notification.Type.HUMANIZED_MESSAGE).setDelayMsec(2000);
+		});
+
+		VerticalLayout v = new VerticalLayout();
+		v.addComponent(new Label("Heirarcy with dots"));
+		v.addComponent(theTree);
+		v.setMargin(false);
+		return v;
 	}
 }

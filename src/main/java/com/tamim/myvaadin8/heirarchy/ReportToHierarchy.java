@@ -17,27 +17,10 @@ import java.util.Map;
 
 public class ReportToHierarchy {
 	static Map<Integer, EmployeeNode> employees;
-	static List<EmployeeNode> rootItems = new ArrayList<>();
-	static EmployeeNode root;
+	static List<EmployeeNode> rootItems;
 	static List<EmployeeNode> deepestChildren = new ArrayList<>();
 
-	public static Integer getMaxDepth() {
-		return maxDepth;
-	}
-
 	static Integer maxDepth = 0;
-
-	public static Map<Integer, EmployeeNode> getEmployees() {
-		return employees;
-	}
-
-	public static List<EmployeeNode> getRootItems() {
-		return rootItems;
-	}
-
-	public static EmployeeNode getRoot() {
-		return root;
-	}
 
 	public static void main(String[] args) throws IOException {
 		readDataAndCreateMap();
@@ -52,7 +35,7 @@ public class ReportToHierarchy {
 
 	public static void readDataAndCreateMap() throws IOException {
 		employees = new HashMap<Integer, EmployeeNode>();
-		final String dir = System.getProperty("user.dir");
+//		final String dir = System.getProperty("user.dir");
 //        String path = dir.replace("/", "\\\\") + "\\data\\";
 //        String path = "vaadin8/heirarchy/input-employee.txt";
 		String path = "G:\\My_User_Files\\my_projects\\vaadin8dev\\com.vaadin8.dev-ui\\src\\main\\java\\vaadin8\\heirarchy\\input-employee.txt";
@@ -63,7 +46,7 @@ public class ReportToHierarchy {
 
 			String strLine;
 			EmployeeNode employee = null;
-
+			rootItems = new ArrayList<>();
 			while ((strLine = br.readLine()) != null) {
 				String[] values = strLine.split(" ");
 				try {
@@ -74,10 +57,10 @@ public class ReportToHierarchy {
 					employee = new EmployeeNode(values[0], values[1] + " " + values[2], "0");
 				}
 				employees.put(employee.getId(), employee);
+
 				if (employee.getReportToId() == 0) {
 //                    System.out.println(employee.toString());
 					rootItems.add(employee);
-//                    root = employee;
 				}
 			}
 			fin.close();
@@ -147,5 +130,17 @@ public class ReportToHierarchy {
 
 	public static List<EmployeeNode> getDeepestChildren() {
 		return deepestChildren;
+	}
+
+	public static Integer getMaxDepth() {
+		return maxDepth;
+	}
+
+//	public static Map<Integer, EmployeeNode> getEmployees() {
+//		return employees;
+//	}
+
+	public static List<EmployeeNode> getRootItems() {
+		return rootItems;
 	}
 }

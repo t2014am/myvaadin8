@@ -46,7 +46,7 @@ public class HeirarchyDots {
 				rootItems.add(new ItemNode(str, new HashSet<>()));
 			} else {
 				String[] strArray = str.split("\\.");
-				logger.info(Arrays.asList(strArray).toString());
+//				logger.info(Arrays.asList(strArray).toString());
 //                rootItems.add(new ItemNode(strArray[0], new HashSet<>()));
 			}
 		}
