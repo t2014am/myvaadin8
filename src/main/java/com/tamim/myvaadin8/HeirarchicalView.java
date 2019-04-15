@@ -26,6 +26,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 
+@SuppressWarnings("serial")
 public class HeirarchicalView extends VerticalLayout implements View {
 	private static final Logger logger = LogManager.getLogger(HeirarchicalView.class);
 	private List<EmployeeNode> rootItems = new ArrayList<>();

@@ -6,10 +6,17 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tamim.myvaadin8.heirarchy.BuildHierarchyFromDb;
+import com.tamim.myvaadin8.model.HierarchicalEmployee;
+import com.tamim.myvaadin8.model.HierarchicalEmployeePostion;
+import com.tamim.myvaadin8.model.HierarchicalEmployeeSpeciality;
+import com.tamim.myvaadin8.service.EmployeePostionService;
+import com.tamim.myvaadin8.service.HierarchicalEmployeeService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.Styles;
+import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -20,6 +27,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.TreeGrid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -29,20 +37,49 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	private final Logger logger = LogManager.getLogger(this.getClass());
 	private Window w = w();
 
-	private Set<String> positions = new HashSet<>();
+	HierarchicalEmployeeService hierarchicalEmployeeService;
+	private Set<HierarchicalEmployeePostion> positions;
+	private Set<HierarchicalEmployeeSpeciality> specialities;
+
+	Set<HierarchicalEmployee> rootItems;
+	Integer maxDepth = 0;
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		logger.info("enter called!");
 		View.super.enter(event);
+		setSizeFull();
+
+		hierarchicalEmployeeService = new HierarchicalEmployeeService();
 
 		someInPageStyling();
 
-		this.getViewComponent().getUI().addWindow(w);
+		addComponent(theTreeGrid());
+//		this.getViewComponent().getUI().addWindow(w);
+	}
+
+	private TreeGrid<HierarchicalEmployee> theTreeGrid() {
+		TreeGrid<HierarchicalEmployee> theTreeGrid = new TreeGrid<>();
+		theTreeGrid.setSizeFull();
+		BuildHierarchyFromDb b = new BuildHierarchyFromDb();
+		rootItems = b.getRootItems();
+		theTreeGrid.setItems(rootItems, HierarchicalEmployee::getSubordinates);
+		theTreeGrid.addColumn(HierarchicalEmployee::getFirstName).setCaption("Firstname").setId("firstName");
+		theTreeGrid.addColumn(HierarchicalEmployee::getLastName).setCaption("Lastname");
+		theTreeGrid.addColumn(e -> e.getPosition().getTitle()).setCaption("Position");
+		theTreeGrid.addColumn(e -> e.getSpecialityString()).setCaption("Speciality");
+		theTreeGrid.sort("firstName", SortDirection.DESCENDING);
+		theTreeGrid.expandRecursively(rootItems, 2);
+
+		return theTreeGrid;
 	}
 
 	public Window w() {
-		positions = getPositions();
+		EmployeePostionService employeePostionService = new EmployeePostionService();
+		positions = new HashSet<>();
+		employeePostionService.findAll().forEach(e -> {
+			positions.add(e);
+		});
 		// Create a sub-window and set the content
 		Window mainWindow = new Window("Employee Details");
 		mainWindow.setDescription("Window");
@@ -90,13 +127,13 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		return textFields;
 	}
 
-	private ComboBox<String> comboBox() {
+	private ComboBox<HierarchicalEmployeePostion> comboBox() {
 		// Create a selection component with some items
-		ComboBox<String> comboBox = new ComboBox<>("Position");
+		ComboBox<HierarchicalEmployeePostion> comboBox = new ComboBox<>("Position");
 		comboBox.setDescription("ComboBox");
+		comboBox.setItemCaptionGenerator(HierarchicalEmployeePostion::getTitle);
 		comboBox.setEmptySelectionAllowed(false);
 		comboBox.setEmptySelectionCaption("Select...");
-		logger.warn(positions.toString());
 		comboBox.setItems(positions);
 
 		// Handle selection event
@@ -182,14 +219,14 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		styles.add(cssStrBuilder.toString());
 	}
 
-	private Set<String> getPositions() {
-		Set<String> positions = new HashSet<>();
-
-		positions.add("Frontend developer");
-		positions.add("Backend developer");
-		positions.add("Fullstack developer");
-
-		return positions;
-	}
+//	private Set<String> getPositions() {
+//		Set<String> positions = new HashSet<>();
+//
+//		positions.add("Frontend developer");
+//		positions.add("Backend developer");
+//		positions.add("Fullstack developer");
+//
+//		return positions;
+//	}
 
 }
