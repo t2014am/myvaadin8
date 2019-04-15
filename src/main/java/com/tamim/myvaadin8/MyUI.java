@@ -2,6 +2,7 @@ package com.tamim.myvaadin8;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.tamim.myvaadin8.windows.WindowsAndModalsView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -21,14 +22,14 @@ import com.vaadin.ui.UI;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-	protected static final String HEIRARCHICAL = "heirarchical";
 	private Navigator navigator;
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		navigator = new Navigator(this, this);
 		navigator.addView("", new InfoPage());
-		navigator.addView(HEIRARCHICAL, new HeirarchicalView());
+		navigator.addView(Constants.HEIRARCHICAL, new HeirarchicalView());
+		navigator.addView(Constants.WINDOWS, new WindowsAndModalsView());
 
 //		final VerticalLayout layout = new VerticalLayout();
 //

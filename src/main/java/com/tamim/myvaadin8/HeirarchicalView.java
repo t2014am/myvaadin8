@@ -56,7 +56,7 @@ public class HeirarchicalView extends VerticalLayout implements View {
 		h.addComponent(thirdTree());
 		h.setSizeFull();
 
-		Label l = new Label("Hierarchical data processing");
+		Label l = new Label("Hierarchical data processinggggggggggggg");
 		l.addStyleNames("v-margin-bottom", "v-button-huge");
 		l.setDescription("just a heading, what else do you want? ");
 		addComponent(l);

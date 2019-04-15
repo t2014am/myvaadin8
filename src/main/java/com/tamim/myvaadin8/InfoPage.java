@@ -7,8 +7,10 @@ import com.vaadin.ui.VerticalLayout;
 
 public class InfoPage extends VerticalLayout implements View {
 	public InfoPage() {
-		Link link = new Link("heirarchical!", new ExternalResource("#!heirarchical"));
+		Link link = new Link("heirarchical!", new ExternalResource("#!" + Constants.HEIRARCHICAL));
+		Link windows = new Link("windows and modals!", new ExternalResource("#!" + Constants.WINDOWS));
 
 		addComponent(link);
+		addComponent(windows);
 	}
 }
