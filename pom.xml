@@ -106,6 +106,18 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>grid-renderers-collection-addon</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.vaadin4qbanos</groupId>
+			<artifactId>jsclipboard</artifactId>
+			<version>1.0.12</version>
+		</dependency>
 	</dependencies>
 
 	<build>

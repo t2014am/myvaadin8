@@ -144,7 +144,7 @@ public class HeirarchicalView extends VerticalLayout implements View {
 		HeirarchyDotsV2 heirarchyDotsV2 = new HeirarchyDotsV2();
 
 		Tree<ItemNode> theTree = new Tree<>();
-//		theTree.setItemCaptionGenerator(ItemNode::getItem);
+		theTree.setItemCaptionGenerator(ItemNode::getItem);
 		TreeData<ItemNode> employeeNodeTreeData = new TreeData<>();
 		Set<ItemNode> itemNodeSet = new HashSet<>();
 		itemNodeSet.addAll(heirarchyDotsV2.someMethod());

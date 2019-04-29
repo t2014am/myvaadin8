@@ -16,7 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.tamim.myvaadin8.HeirarchicalView;
+
 public class ReportToHierarchy {
+	private static final Logger logger = LogManager.getLogger(ReportToHierarchy.class);
 	static Map<Integer, EmployeeNode> employees;
 	static List<EmployeeNode> rootItems;
 	static List<EmployeeNode> deepestChildren = new ArrayList<>();
@@ -41,8 +47,11 @@ public class ReportToHierarchy {
 		// String path = "vaadin8/heirarchy/input-employee.txt";
 		File currentDirFile = new File("");
 		System.out.println(currentDirFile.getAbsolutePath());
+		logger.warn(currentDirFile.getAbsolutePath());
+		
 		String pathForTesting = currentDirFile.getAbsolutePath();
 		String path = "";
+		//TODO: Learn about relative paths extensively! 
 		if (pathForTesting.contains("home") || pathForTesting.contains("mnt")) {
 			/// mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8
 			// path =
@@ -50,9 +59,11 @@ public class ReportToHierarchy {
 			path = "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8" + "/src/main/java" + "/input-employee.txt";
 			// /myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt
 		} else {
-			path = "G:\\My_User_Files\\my_projects\\vaadin8dev\\com.vaadin8.dev-ui\\src\\main\\java\\vaadin8\\heirarchy\\input-employee.txt";
+//			path = "G:\\My_User_Files\\my_projects\\vaadin8dev\\com.vaadin8.dev-ui\\src\\main\\java\\vaadin8\\heirarchy\\input-employee.txt";
+			path = "C:\\Portables\\share_with_vm\\Ubuntu\\my_projects\\myvaadin8\\src\\main\\java\\input-employee.txt";
 		}
 		System.out.println(path);
+		logger.warn(path);
 
 		try {
 			FileReader fin = new FileReader(path);

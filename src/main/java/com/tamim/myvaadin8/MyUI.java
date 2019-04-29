@@ -2,6 +2,7 @@ package com.tamim.myvaadin8;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.tamim.myvaadin8.grid_renderers_collection.GridRenderersHere;
 import com.tamim.myvaadin8.windows.WindowsAndModalsView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -31,6 +32,7 @@ public class MyUI extends UI {
 		navigator.addView("", new InfoPage());
 		navigator.addView(Constants.HEIRARCHICAL, new HeirarchicalView());
 		navigator.addView(Constants.WINDOWS, new WindowsAndModalsView());
+		navigator.addView(Constants.GRID_RENDERERS_COLLECTION, new GridRenderersHere());
 
 //		final VerticalLayout layout = new VerticalLayout();
 //

@@ -27,6 +27,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -48,7 +49,6 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	private Set<HierarchicalEmployeeSpeciality> specialities;
 
 	private HierarchicalEmployee hierarchicalEmployee;
-	private HierarchicalEmployee hierarchicalEmployeeBeforeConfirm;
 
 	private Set<HierarchicalEmployee> rootItems;
 	private Integer maxDepth = 0;
@@ -128,7 +128,6 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 			if (l.getFirstSelectedItem().isPresent()) {
 //				logger.warn(l.getFirstSelectedItem().get().toString());
 				hierarchicalEmployee = l.getFirstSelectedItem().get();
-				hierarchicalEmployeeBeforeConfirm = new HierarchicalEmployee(hierarchicalEmployee);
 				w = addOrEditItem(hierarchicalEmployee);
 				this.getViewComponent().getUI().addWindow(w);
 			}
@@ -343,7 +342,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 
 		styles.add(cssStrBuilder.toString());
 	}
-
+	
 //	private Set<String> getPositions() {
 //		Set<String> positions = new HashSet<>();
 //
