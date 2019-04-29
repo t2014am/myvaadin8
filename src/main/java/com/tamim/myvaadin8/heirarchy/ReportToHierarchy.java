@@ -1,6 +1,7 @@
 package com.tamim.myvaadin8.heirarchy;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,9 +25,9 @@ public class ReportToHierarchy {
 
 	public static void main(String[] args) throws IOException {
 		readDataAndCreateMap();
-//        for (EmployeeNode e : rootItems) {
-//            buildHierarchyTree(0, e);
-//        }
+		// for (EmployeeNode e : rootItems) {
+		// buildHierarchyTree(0, e);
+		// }
 
 		for (EmployeeNode e : rootItems) {
 			printHierarchyTree(e, 0);
@@ -35,10 +36,23 @@ public class ReportToHierarchy {
 
 	public static void readDataAndCreateMap() throws IOException {
 		employees = new HashMap<Integer, EmployeeNode>();
-//		final String dir = System.getProperty("user.dir");
-//        String path = dir.replace("/", "\\\\") + "\\data\\";
-//        String path = "vaadin8/heirarchy/input-employee.txt";
-		String path = "G:\\My_User_Files\\my_projects\\vaadin8dev\\com.vaadin8.dev-ui\\src\\main\\java\\vaadin8\\heirarchy\\input-employee.txt";
+		// final String dir = System.getProperty("user.dir");
+		// String path = dir.replace("/", "\\\\") + "\\data\\";
+		// String path = "vaadin8/heirarchy/input-employee.txt";
+		File currentDirFile = new File("");
+		System.out.println(currentDirFile.getAbsolutePath());
+		String pathForTesting = currentDirFile.getAbsolutePath();
+		String path = "";
+		if (pathForTesting.contains("home") || pathForTesting.contains("mnt")) {
+			/// mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8
+			// path =
+			// "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8/myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt";
+			path = "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8" + "/src/main/java" + "/input-employee.txt";
+			// /myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt
+		} else {
+			path = "G:\\My_User_Files\\my_projects\\vaadin8dev\\com.vaadin8.dev-ui\\src\\main\\java\\vaadin8\\heirarchy\\input-employee.txt";
+		}
+		System.out.println(path);
 
 		try {
 			FileReader fin = new FileReader(path);
@@ -59,7 +73,7 @@ public class ReportToHierarchy {
 				employees.put(employee.getId(), employee);
 
 				if (employee.getReportToId() == 0) {
-//                    System.out.println(employee.toString());
+					// System.out.println(employee.toString());
 					rootItems.add(employee);
 				}
 			}
@@ -87,21 +101,21 @@ public class ReportToHierarchy {
 	public static void buildHierarchyTree(int depth, EmployeeNode localRoot) {
 		maxDepth = (maxDepth > depth) ? maxDepth : depth;
 
-//        if (maxDepth == depth) {
-//            deepestChildren.add(localRoot);
-//        } else if (maxDepth > depth) {
-//            deepestChildren.clear();
-//            deepestChild = localRoot;
-//            maxDepth = depth;
-//        }
+		// if (maxDepth == depth) {
+		// deepestChildren.add(localRoot);
+		// } else if (maxDepth > depth) {
+		// deepestChildren.clear();
+		// deepestChild = localRoot;
+		// maxDepth = depth;
+		// }
 
-//        if (maxDepth > depth) {
-//            deepestChildren.clear();
-//            deepestChildren.add(localRoot);
-//        } else {
-//            maxDepth = depth;
-//
-//        }
+		// if (maxDepth > depth) {
+		// deepestChildren.clear();
+		// deepestChildren.add(localRoot);
+		// } else {
+		// maxDepth = depth;
+		//
+		// }
 
 		List<EmployeeNode> subordinates = getSubordinatesById(localRoot.getId());
 		localRoot.setSubordinates(subordinates);
@@ -136,9 +150,9 @@ public class ReportToHierarchy {
 		return maxDepth;
 	}
 
-//	public static Map<Integer, EmployeeNode> getEmployees() {
-//		return employees;
-//	}
+	// public static Map<Integer, EmployeeNode> getEmployees() {
+	// return employees;
+	// }
 
 	public static List<EmployeeNode> getRootItems() {
 		return rootItems;

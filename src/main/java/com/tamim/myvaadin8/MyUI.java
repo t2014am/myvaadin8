@@ -19,6 +19,7 @@ import com.vaadin.ui.UI;
  * intended to be overridden to add component to the user interface and
  * initialize non-component functionality.
  */
+@SuppressWarnings("serial")
 @Theme("mytheme")
 public class MyUI extends UI {
 

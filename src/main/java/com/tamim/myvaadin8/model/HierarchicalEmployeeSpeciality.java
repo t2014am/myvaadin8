@@ -1,7 +1,8 @@
 package com.tamim.myvaadin8.model;
 
 import java.io.Serializable;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HierarchicalEmployeeSpeciality implements Serializable {
 
 //    @ManyToOne
@@ -20,5 +22,5 @@ public class HierarchicalEmployeeSpeciality implements Serializable {
 	private Long specialityId;
 	private String title;
 
-	private List<HierarchicalEmployee> hierarchicalEmployees;
+//	private List<HierarchicalEmployee> hierarchicalEmployees;
 }
