@@ -28,6 +28,7 @@ public class HierarchicalEmployee implements Serializable {
 	private String firstName;
 	private String lastName;
 	private Long supervisorId;
+	private HierarchicalEmployee supervisor;
 	private Set<HierarchicalEmployeeSpeciality> specialities;
 	private String gender;
 	// @OneToOne(mappedBy = "hierarchical_employee_position")
@@ -39,6 +40,7 @@ public class HierarchicalEmployee implements Serializable {
 		firstName = e.getFirstName();
 		lastName = e.getLastName();
 		supervisorId = e.getSupervisorId();
+		supervisor = e.getSupervisor();
 		specialities = e.getSpecialities();
 		gender = e.getGender();
 		position = e.getPosition();
@@ -57,7 +59,7 @@ public class HierarchicalEmployee implements Serializable {
 			sb.deleteCharAt(sb.length() - 2);
 		}
 		if (s.size() >= 2) {
-			//find the last comma(,) and replace it with an (and)
+			// find the last comma(,) and replace it with an (and)
 			StringBuilder newSB = new StringBuilder(sb.reverse().toString().replaceFirst(",", "dna "));
 //			String str = sb.toString().replaceFirst(",", " and");
 			return newSB.reverse().toString();
@@ -66,4 +68,9 @@ public class HierarchicalEmployee implements Serializable {
 		return sb.toString();
 	}
 
+	public void setSupervisor(HierarchicalEmployee e) {
+		// TODO: is it a good solution to avoid the recursion, or could there be better
+		// solutions?
+		supervisorId = e.getEmployeeId();
+	}
 }

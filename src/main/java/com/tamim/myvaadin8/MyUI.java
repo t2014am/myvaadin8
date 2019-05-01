@@ -1,12 +1,21 @@
 package com.tamim.myvaadin8;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.tamim.myvaadin8.grid_renderers_collection.GridRenderersHere;
 import com.tamim.myvaadin8.windows.WindowsAndModalsView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionDestroyEvent;
+import com.vaadin.server.SessionDestroyListener;
+import com.vaadin.server.SessionInitEvent;
+import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
@@ -20,6 +29,7 @@ import com.vaadin.ui.UI;
  * intended to be overridden to add component to the user interface and
  * initialize non-component functionality.
  */
+//@PreserveOnRefresh
 @SuppressWarnings("serial")
 @Theme("mytheme")
 public class MyUI extends UI {
@@ -51,6 +61,26 @@ public class MyUI extends UI {
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
 	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-	public static class MyUIServlet extends VaadinServlet {
+	public static class MyUIServlet extends VaadinServlet implements SessionInitListener, SessionDestroyListener {
+		private final Logger logger = LogManager.getLogger(this.getClass());
+
+		@Override
+		protected void servletInitialized() throws ServletException {
+			super.servletInitialized();
+			getService().addSessionInitListener(this);
+			getService().addSessionDestroyListener(this);
+		}
+
+		@Override
+		public void sessionDestroy(SessionDestroyEvent event) {
+			logger.info("SessionDestroy called!");
+
+		}
+
+		@Override
+		public void sessionInit(SessionInitEvent event) throws ServiceException {
+			logger.info("SessionInit called!");
+
+		}
 	}
 }

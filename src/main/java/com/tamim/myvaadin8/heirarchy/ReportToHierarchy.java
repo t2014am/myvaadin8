@@ -28,6 +28,7 @@ public class ReportToHierarchy {
 	static List<EmployeeNode> deepestChildren = new ArrayList<>();
 
 	static Integer maxDepth = 0;
+	private static String path = "";
 
 	public static void main(String[] args) throws IOException {
 		readDataAndCreateMap();
@@ -46,23 +47,27 @@ public class ReportToHierarchy {
 		// String path = dir.replace("/", "\\\\") + "\\data\\";
 		// String path = "vaadin8/heirarchy/input-employee.txt";
 		File currentDirFile = new File("");
-		System.out.println(currentDirFile.getAbsolutePath());
-		logger.warn(currentDirFile.getAbsolutePath());
-		
-		String pathForTesting = currentDirFile.getAbsolutePath();
-		String path = "";
-		//TODO: Learn about relative paths extensively! 
-		if (pathForTesting.contains("home") || pathForTesting.contains("mnt")) {
-			/// mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8
-			// path =
-			// "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8/myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt";
-			path = "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8" + "/src/main/java" + "/input-employee.txt";
-			// /myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt
-		} else {
+//		System.out.println(currentDirFile.getAbsolutePath());
+		logger.info(currentDirFile.getAbsolutePath());
+
+		if (path == null || path.equals("")) {
+			logger.error("inside if?");
+			String pathForTesting = currentDirFile.getAbsolutePath();
+			// TODO: Learn about relative paths extensively!
+			if (pathForTesting.contains("home") || pathForTesting.contains("mnt")) {
+				/// mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8
+				// path =
+				// "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8/myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt";
+				path = "/mnt/hgfs/share_with_vm/Ubuntu/my_projects/myvaadin8" + "/src/main/java"
+						+ "/input-employee.txt";
+				// /myvaadin8/src/main/java/com/tamim/myvaadin8/heirarchy/input-employee.txt
+			} else {
 //			path = "G:\\My_User_Files\\my_projects\\vaadin8dev\\com.vaadin8.dev-ui\\src\\main\\java\\vaadin8\\heirarchy\\input-employee.txt";
-			path = "C:\\Portables\\share_with_vm\\Ubuntu\\my_projects\\myvaadin8\\src\\main\\java\\input-employee.txt";
+				path = "C:\\Portables\\share_with_vm\\Ubuntu\\my_projects\\myvaadin8\\src\\main\\java\\input-employee.txt";
+			}
+//		path = "input-employee.txt";
+			System.out.println(path);
 		}
-		System.out.println(path);
 		logger.warn(path);
 
 		try {
@@ -167,5 +172,13 @@ public class ReportToHierarchy {
 
 	public static List<EmployeeNode> getRootItems() {
 		return rootItems;
+	}
+
+	public static String getPath() {
+		return path;
+	}
+
+	public static void setPath(String path) {
+		ReportToHierarchy.path = path;
 	}
 }

@@ -31,6 +31,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TreeGrid;
@@ -51,6 +52,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	private HierarchicalEmployee hierarchicalEmployee;
 
 	private Set<HierarchicalEmployee> rootItems;
+	private Set<HierarchicalEmployee> hierarchicalEmployeesFlat;
 	private Integer maxDepth = 0;
 
 	private Binder<HierarchicalEmployee> binder = new Binder<>();
@@ -58,6 +60,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	TextField firstName = new TextField("Name: ");
 
 	TreeGrid<HierarchicalEmployee> theTreeGrid;
+	ComboBox<HierarchicalEmployee> comboBoxSupervisor;
 
 	@Override
 	public void enter(ViewChangeEvent event) {
@@ -103,6 +106,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		theTreeGrid = new TreeGrid<>();
 		theTreeGrid.setSizeFull();
 		BuildHierarchyFromDb b = new BuildHierarchyFromDb();
+		hierarchicalEmployeesFlat = b.getEmployeesFlat();
 		rootItems = b.getRootItems();
 		theTreeGrid.setItems(rootItems, HierarchicalEmployee::getSubordinates);
 		theTreeGrid.addColumn(c -> {
@@ -137,9 +141,16 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	}
 
 	public Window addOrEditItem(HierarchicalEmployee hEmployee) {
+
 		if (hEmployee != null) {
 //			logger.warn(hEmployee.toString());
 			logger.warn(hEmployee.getFirstName() + " " + hEmployee.getGender());
+		} else {
+			logger.warn(" adding mode! ");
+			if (hierarchicalEmployee != null) {
+				theTreeGrid.deselect(hierarchicalEmployee);
+			}
+			hierarchicalEmployee = new HierarchicalEmployee();
 		}
 		EmployeePostionService employeePostionService = new EmployeePostionService();
 		positions = new HashSet<>();
@@ -171,6 +182,8 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 			} else {
 				mainWindow.close();
 			}
+
+//			Notification.show("Item saved! ", hierarchicalEmployee.toString(), Type.TRAY_NOTIFICATION);
 		});
 
 		// Put some components in it
@@ -180,6 +193,10 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		subContent.addComponent(checkBoxGroup());
 		subContent.addComponent(radioButtonGroup());
 		subContent.addComponent(comboBox());
+
+		comboBoxSupervisor = comboBoxSupervisor();
+
+		subContent.addComponent(comboBoxSupervisor);
 		subContent.addComponent(save);
 		subContent.setComponentAlignment(save, Alignment.BOTTOM_RIGHT);
 
@@ -237,6 +254,29 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 //		});
 
 		binder.bind(comboBox, HierarchicalEmployee::getPosition, HierarchicalEmployee::setPosition);
+
+		return comboBox;
+	}
+
+	private ComboBox<HierarchicalEmployee> comboBoxSupervisor() {
+		// Create a selection component with some items
+		ComboBox<HierarchicalEmployee> comboBox = new ComboBox<>("Position");
+		comboBox.setDescription("Supervisor");
+		comboBox.setItemCaptionGenerator(HierarchicalEmployee::getFirstName);
+		comboBox.setEmptySelectionAllowed(false);
+		comboBox.setEmptySelectionCaption("Select supervisor...");
+
+		Set<HierarchicalEmployee> temp = new HashSet<>(hierarchicalEmployeesFlat);
+		temp.remove(hierarchicalEmployee);
+		comboBox.setItems(temp);
+
+		// Handle selection event
+//		comboBox.addSelectionListener(l -> {
+//			Notification.show("Caption: comboBox", "Description: " + l.getValue().toString(),
+//					Notification.Type.TRAY_NOTIFICATION).setDelayMsec(2000);
+//		});
+
+		binder.bind(comboBox, HierarchicalEmployee::getSupervisor, HierarchicalEmployee::setSupervisor);
 
 		return comboBox;
 	}
@@ -299,6 +339,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 
 //			logger.warn(hierarchicalEmployee.toString());
 			binderWriteBean(hierarchicalEmployee);
+			logger.info(hierarchicalEmployee.toString());
 //			logger.warn(hierarchicalEmployee.toString());
 
 			theTreeGrid.deselect(hierarchicalEmployee);
@@ -342,7 +383,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 
 		styles.add(cssStrBuilder.toString());
 	}
-	
+
 //	private Set<String> getPositions() {
 //		Set<String> positions = new HashSet<>();
 //

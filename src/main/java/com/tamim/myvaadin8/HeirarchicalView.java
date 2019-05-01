@@ -18,6 +18,7 @@ import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -38,6 +39,10 @@ public class HeirarchicalView extends VerticalLayout implements View {
 		setMargin(true);
 
 		try {
+			String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+			String path = basepath + "\\input-employee.txt";
+			logger.error(path);
+			ReportToHierarchy.setPath(path);
 			ReportToHierarchy.readDataAndCreateMap();
 			children.clear();
 			rootItems = ReportToHierarchy.getRootItems();

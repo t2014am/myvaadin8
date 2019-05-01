@@ -47,7 +47,7 @@
 	</dependencyManagement>
 
 	<dependencies>
-		<!-- MY DEPENDENCIES -->
+		<!-- JAVA DEPENDENCIES ============================================== -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -82,14 +82,14 @@
 			<version>1.19.4</version>
 		</dependency>
 
-
-		<!-- ============================================== -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- VAADIN ADD-ONS ============================================== -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>

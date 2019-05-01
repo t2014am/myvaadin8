@@ -44,10 +44,11 @@ public class BuildHierarchyFromDb {
 		return employeesFlat;
 	}
 
-	public List<HierarchicalEmployee> getSubordinatesById(Long rid) {
+	public List<HierarchicalEmployee> getSubordinatesById(HierarchicalEmployee emp) {
 		List<HierarchicalEmployee> subordinates = new ArrayList<HierarchicalEmployee>();
 		for (HierarchicalEmployee e : employeesFlat) {
-			if (e.getSupervisorId() == rid) {
+			if (e.getSupervisorId() == emp.getEmployeeId()) {
+				e.setSupervisor(emp);
 				subordinates.add(e);
 			}
 		}
@@ -57,7 +58,7 @@ public class BuildHierarchyFromDb {
 	public void buildHierarchyTree(int depth, HierarchicalEmployee localRoot) {
 		maxDepth = (maxDepth > depth) ? maxDepth : depth;
 
-		List<HierarchicalEmployee> subordinates = getSubordinatesById(localRoot.getEmployeeId());
+		List<HierarchicalEmployee> subordinates = getSubordinatesById(localRoot);
 		localRoot.setSubordinates(subordinates);
 		if (subordinates.size() == 0) {
 			return;
@@ -67,4 +68,5 @@ public class BuildHierarchyFromDb {
 			buildHierarchyTree(depth + 1, e);
 		}
 	}
+
 }
