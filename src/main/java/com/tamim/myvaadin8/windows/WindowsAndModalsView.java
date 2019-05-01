@@ -144,7 +144,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 
 		if (hEmployee != null) {
 //			logger.warn(hEmployee.toString());
-			logger.warn(hEmployee.getFirstName() + " " + hEmployee.getGender());
+			logger.warn("SelectedItem: {}", hEmployee.getFirstName() + " " + hEmployee.getGender());
 		} else {
 			logger.warn(" adding mode! ");
 			if (hierarchicalEmployee != null) {
@@ -262,7 +262,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		// Create a selection component with some items
 		ComboBox<HierarchicalEmployee> comboBox = new ComboBox<>("Position");
 		comboBox.setDescription("Supervisor");
-		comboBox.setItemCaptionGenerator(HierarchicalEmployee::getFirstName);
+		comboBox.setItemCaptionGenerator(HierarchicalEmployee::getFullName);
 		comboBox.setEmptySelectionAllowed(false);
 		comboBox.setEmptySelectionCaption("Select supervisor...");
 
