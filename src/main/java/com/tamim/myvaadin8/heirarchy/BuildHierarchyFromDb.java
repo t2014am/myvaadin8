@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class BuildHierarchyFromDb {
 
-	private Set<HierarchicalEmployee> employeesFlat;
+	private Set<HierarchicalEmployee> employeesFlatWithSupervisors;
 
 	private Set<HierarchicalEmployee> rootItems;
 	private Integer maxDepth = 0;
@@ -21,9 +21,9 @@ public class BuildHierarchyFromDb {
 	public BuildHierarchyFromDb() {
 
 		rootItems = new HashSet<>();
-		employeesFlat = getTheFlatList();
+		employeesFlatWithSupervisors = getTheFlatList();
 
-		employeesFlat.forEach(e -> {
+		employeesFlatWithSupervisors.forEach(e -> {
 			if (e.getSupervisorId() == 0) {
 				rootItems.add(e);
 			}
@@ -46,7 +46,7 @@ public class BuildHierarchyFromDb {
 
 	public List<HierarchicalEmployee> getSubordinatesById(HierarchicalEmployee emp) {
 		List<HierarchicalEmployee> subordinates = new ArrayList<HierarchicalEmployee>();
-		for (HierarchicalEmployee e : employeesFlat) {
+		for (HierarchicalEmployee e : employeesFlatWithSupervisors) {
 			if (e.getSupervisorId() == emp.getEmployeeId()) {
 				e.setSupervisor(emp);
 				subordinates.add(e);

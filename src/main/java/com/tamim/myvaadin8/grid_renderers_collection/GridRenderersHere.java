@@ -26,9 +26,7 @@ public class GridRenderersHere extends VerticalLayout implements View {
 	private final Logger logger = LogManager.getLogger(this.getClass());
 
 	Set<ModelForCheckbox> items = getItemsFromDBDummy();
-	Set<ModelForCheckbox> itemsTemp = getItemsFromDBDummy();
-	Set<ModelForCheckbox> itemsBeforeSave = getItemsFromDBDummy();
-	Set<ModelForCheckbox> itemsFromDBDummyFromSession;
+	Set<ModelForCheckbox> itemsHardCopy = hardCopy(items);
 	private VaadinSession session;
 
 	@Override
@@ -37,9 +35,7 @@ public class GridRenderersHere extends VerticalLayout implements View {
 		logger.info("entered! ");
 		session = getUI().getSession();
 		session.setAttribute("items", items);
-		session.setAttribute("itemsBeforeSave", itemsBeforeSave);
 //		VaadinService.getCurrentRequest().getWrappedSession().setAttribute("items", items);
-		itemsFromDBDummyFromSession = getItemsFromDBDummyFromSession();
 
 		Button b = new Button("Open Grid Renderers");
 		b.setDescription("Open checkbox grid renderer test!");
@@ -58,9 +54,19 @@ public class GridRenderersHere extends VerticalLayout implements View {
 		Button save = new Button("Save");
 		save.addClickListener(l -> {
 
+			logger.warn("Save");
+			logger.warn("Save");
+			logger.warn("Save");
+			logger.warn("Save");
+			
 //			logger.warn("itemsBeforeSave " + itemsBeforeSave.toString());
 //			logger.warn("items           " + items.toString());
 //			saveItemsToDB(items);
+			items.clear();
+			items = hardCopy(itemsHardCopy);
+			session.setAttribute("items", items);
+//			logger.warn(session.getAttribute("items"));
+
 			w.close();
 		});
 
@@ -69,14 +75,12 @@ public class GridRenderersHere extends VerticalLayout implements View {
 			logger.trace("Cancel");
 //			items.clear();
 //		    TODO: SO ITEMS.CLEAR() IS GOING TO CLEAR OUT THE DATA FROM SESSION TOO! 
-			Set<ModelForCheckbox> itemsTempp = new HashSet<>(itemsTemp);
-			items = new HashSet<>(itemsTempp);
-			logger.warn("items           " + items.toString());
-//			logger.warn("items session   " + getItemsFromDBDummyFromSession().toString());
-//			logger.warn("items getShit   " + getShit().toString());
-//			logger.warn("getItemsBSion   " + getItemsBeforeSaveFromSession().toString());
-			logger.warn("itemsTemp       " + itemsTemp.toString());
-//			logger.warn("items session   " + VaadinService.getCurrentRequest().getWrappedSession().getAttribute("items"));
+
+//			logger.warn(items.toString());
+//			logger.warn(itemsHardCopy.toString());
+//			logger.warn(itemsHardCopy == items);
+//			logger.warn(session.getAttribute("items"));
+
 			w.close();
 		});
 		HorizontalLayout buttons = new HorizontalLayout(save, cancel);
@@ -102,49 +106,13 @@ public class GridRenderersHere extends VerticalLayout implements View {
 
 //		logger.warn(session.getAttribute("items").toString());
 //		logger.warn(VaadinService.getCurrentRequest().getWrappedSession().getAttribute("items"));
-		g.setItems(items);
+		itemsHardCopy = hardCopy(items);
+		g.setItems(itemsHardCopy);
 		g.addColumn(ModelForCheckbox::getName).setCaption("Name").setId("name");
 		g.sort("name");
 
-//		CheckBox visibile = new CheckBox();
-//		g.addColumn(ModelForCheckbox::getVisible, new CheckboxRenderer<>(ModelForCheckbox::setVisible))
-//				.setCaption("Visible").setEditorComponent(visibile, ModelForCheckbox::setVisible).setEditable(true)
-//				.setId("visible");
-
-//		visibile.addValueChangeListener(l -> {
-////			NOT WORKING! 
-//			logger.warn("visible checkbox clicked! ");
-//			logger.warn(l.getValue() + " ");
-//		});
-
-//		logger.warn(g.getColumn("visible").getEditorBinding().getGetter().toString());
-
-		BooleanSwitchRenderer<ModelForCheckbox> booleanRenderer = new BooleanSwitchRenderer<>((obj, args) -> {
-			logger.warn("Clicked: {} {}", itemsTemp.toString());
-//			logger.warn("Clicked: {} {}", itemsTemp.size(), itemsTemp.toString());
-//			logger.warn("Clicked: {} {}", obj.toString());
-//			set.removeIf(s -> s.length() % 2 == 0) // better way! 
-			for (Iterator<ModelForCheckbox> iterator = itemsTemp.iterator(); iterator.hasNext();) {
-				ModelForCheckbox s = iterator.next();
-				if ((Long) s.getId() == (Long) obj.getId()) {
-//					logger.info("removing {}", obj);
-					iterator.remove();
-				}
-			}
-//			logger.debug("Clicked: {} {}", itemsTemp.toString());
-			itemsTemp.add(obj);
-			obj.setVisible(args);
-			for (Iterator<ModelForCheckbox> iterator = itemsTemp.iterator(); iterator.hasNext();) {
-				ModelForCheckbox s = iterator.next();
-				if ((Long) s.getId() == (Long) obj.getId()) {
-//					logger.info("removing {}", obj);
-					iterator.remove();
-				}
-			}
-//			itemsTemp.add(obj);
-//			logger.warn("Clicked: {} {}", itemsTemp.size());
-			logger.warn("Clicked: {} {}", items.toString());
-		}, "true", "false");
+		BooleanSwitchRenderer<ModelForCheckbox> booleanRenderer = new BooleanSwitchRenderer<>(
+				ModelForCheckbox::setVisible, "true", "false");
 
 		booleanRenderer.addItemEditListener(event -> {
 //			Notification.show("Column " + event.getColumn().getCaption() + " edited with value "
@@ -166,9 +134,19 @@ public class GridRenderersHere extends VerticalLayout implements View {
 		return modelForCheckboxs;
 	}
 
-	private Set<ModelForCheckbox> getShit() {
-//		logger.debug(itemsFromDBDummyFromSession.toString());
-		return itemsFromDBDummyFromSession;
+	public Set<ModelForCheckbox> hardCopy(Set<ModelForCheckbox> originalSet) {
+		Set<ModelForCheckbox> hardCopy = new HashSet<>();
+		for (ModelForCheckbox modelForCheckbox : originalSet) {
+			hardCopy.add(new ModelForCheckbox(modelForCheckbox.getId(), modelForCheckbox.getName(),
+					modelForCheckbox.getVisible()));
+//			hardCopy.add(new ModelForCheckbox(modelForCheckbox));
+		}
+
+//      logger.warn(items.toString());
+//		logger.warn(hardCopy.toString());
+//		logger.warn(hardCopy == items);
+
+		return hardCopy;
 	}
 
 	private Set<ModelForCheckbox> getItemsBeforeSaveFromSession() {

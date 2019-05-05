@@ -14,6 +14,15 @@ public class EmployeePostionService implements ServiceInterface<HierarchicalEmpl
 		return getAllDummy();
 	}
 
+	public Set<HierarchicalEmployeePostion> findAllAsSet() {
+		Set<HierarchicalEmployeePostion> ps = new HashSet<>();
+		findAll().forEach(e -> {
+			ps.add(e);
+		});
+
+		return ps;
+	}
+
 	@Override
 	public Optional<HierarchicalEmployeePostion> findById(Long id) {
 		// TODO Auto-generated method stub

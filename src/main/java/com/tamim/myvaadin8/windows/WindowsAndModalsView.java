@@ -60,7 +60,6 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	TextField firstName = new TextField("Name: ");
 
 	TreeGrid<HierarchicalEmployee> theTreeGrid;
-	ComboBox<HierarchicalEmployee> comboBoxSupervisor;
 
 	@Override
 	public void enter(ViewChangeEvent event) {
@@ -106,7 +105,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		theTreeGrid = new TreeGrid<>();
 		theTreeGrid.setSizeFull();
 		BuildHierarchyFromDb b = new BuildHierarchyFromDb();
-		hierarchicalEmployeesFlat = b.getEmployeesFlat();
+		hierarchicalEmployeesFlat = b.getEmployeesFlatWithSupervisors();
 		rootItems = b.getRootItems();
 		theTreeGrid.setItems(rootItems, HierarchicalEmployee::getSubordinates);
 		theTreeGrid.addColumn(c -> {
@@ -141,7 +140,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 	}
 
 	public Window addOrEditItem(HierarchicalEmployee hEmployee) {
-
+		ComponentsForHE componentsForHE = new ComponentsForHE();
 		if (hEmployee != null) {
 //			logger.warn(hEmployee.toString());
 			logger.warn("SelectedItem: {}", hEmployee.getFirstName() + " " + hEmployee.getGender());
@@ -152,11 +151,7 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 			}
 			hierarchicalEmployee = new HierarchicalEmployee();
 		}
-		EmployeePostionService employeePostionService = new EmployeePostionService();
-		positions = new HashSet<>();
-		employeePostionService.findAll().forEach(e -> {
-			positions.add(e);
-		});
+
 		// Create a sub-window and set the content
 		Window mainWindow = new Window("Employee Details");
 		mainWindow.setDescription("Window");
@@ -190,13 +185,26 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		VerticalLayout subContent = new VerticalLayout();
 		subContent.addComponent(new Label("Please fill-in your information."));
 		subContent.addComponent(textFields());
-		subContent.addComponent(checkBoxGroup());
-		subContent.addComponent(radioButtonGroup());
-		subContent.addComponent(comboBox());
 
-		comboBoxSupervisor = comboBoxSupervisor();
+		CheckBoxGroup<HierarchicalEmployeeSpeciality> cbgs = componentsForHE.checkBoxGroupSpecialitites();
+		subContent.addComponent(cbgs);
+		binder.forField(cbgs).bind(HierarchicalEmployee::getSpecialities, HierarchicalEmployee::setSpecialities);
 
+		RadioButtonGroup<String> radioButtonGroupGender = componentsForHE.radioButtonGroupGender();
+		subContent.addComponent(radioButtonGroupGender);
+		binder.bind(radioButtonGroupGender, HierarchicalEmployee::getGender, HierarchicalEmployee::setGender);
+
+		ComboBox<HierarchicalEmployeePostion> comboBoxPosition = componentsForHE.comboBoxPosition();
+		subContent.addComponent(comboBoxPosition);
+		binder.bind(comboBoxPosition, HierarchicalEmployee::getPosition, HierarchicalEmployee::setPosition);
+
+//		comboBoxSupervisor = comboBoxSupervisor();
+
+		ComboBox<HierarchicalEmployee> comboBoxSupervisor = componentsForHE
+				.comboBoxSupervisor(hierarchicalEmployeesFlat, hierarchicalEmployee);
+		binder.bind(comboBoxSupervisor, HierarchicalEmployee::getSupervisor, HierarchicalEmployee::setSupervisor);
 		subContent.addComponent(comboBoxSupervisor);
+
 		subContent.addComponent(save);
 		subContent.setComponentAlignment(save, Alignment.BOTTOM_RIGHT);
 
@@ -236,92 +244,6 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 		textFields.setMargin(false);
 
 		return textFields;
-	}
-
-	private ComboBox<HierarchicalEmployeePostion> comboBox() {
-		// Create a selection component with some items
-		ComboBox<HierarchicalEmployeePostion> comboBox = new ComboBox<>("Position");
-		comboBox.setDescription("ComboBox");
-		comboBox.setItemCaptionGenerator(HierarchicalEmployeePostion::getTitle);
-		comboBox.setEmptySelectionAllowed(false);
-		comboBox.setEmptySelectionCaption("Select...");
-		comboBox.setItems(positions);
-
-		// Handle selection event
-//		comboBox.addSelectionListener(l -> {
-//			Notification.show("Caption: comboBox", "Description: " + l.getValue().toString(),
-//					Notification.Type.TRAY_NOTIFICATION).setDelayMsec(2000);
-//		});
-
-		binder.bind(comboBox, HierarchicalEmployee::getPosition, HierarchicalEmployee::setPosition);
-
-		return comboBox;
-	}
-
-	private ComboBox<HierarchicalEmployee> comboBoxSupervisor() {
-		// Create a selection component with some items
-		ComboBox<HierarchicalEmployee> comboBox = new ComboBox<>("Position");
-		comboBox.setDescription("Supervisor");
-		comboBox.setItemCaptionGenerator(HierarchicalEmployee::getFullName);
-		comboBox.setEmptySelectionAllowed(false);
-		comboBox.setEmptySelectionCaption("Select supervisor...");
-
-		Set<HierarchicalEmployee> temp = new HashSet<>(hierarchicalEmployeesFlat);
-		temp.remove(hierarchicalEmployee);
-		comboBox.setItems(temp);
-
-		// Handle selection event
-//		comboBox.addSelectionListener(l -> {
-//			Notification.show("Caption: comboBox", "Description: " + l.getValue().toString(),
-//					Notification.Type.TRAY_NOTIFICATION).setDelayMsec(2000);
-//		});
-
-		binder.bind(comboBox, HierarchicalEmployee::getSupervisor, HierarchicalEmployee::setSupervisor);
-
-		return comboBox;
-	}
-
-	private RadioButtonGroup<String> radioButtonGroup() {
-		RadioButtonGroup<String> radioButtonGroup = new RadioButtonGroup<>("Gender");
-		radioButtonGroup.setDescription("Radio Button Group");
-		radioButtonGroup.setItems("Male", "Female", "Other");
-		radioButtonGroup.addStyleNames("radioButtonGroup");
-//		radioButtonGroup.addValueChangeListener(l -> {
-//			Notification.show("Caption: radioButtonGroup", "Description: " + l.getValue().toString(),
-//					Notification.Type.TRAY_NOTIFICATION).setDelayMsec(2000);
-//		});
-
-		binder.bind(radioButtonGroup, HierarchicalEmployee::getGender, HierarchicalEmployee::setGender);
-
-		return radioButtonGroup;
-	}
-
-	private CheckBoxGroup<HierarchicalEmployeeSpeciality> checkBoxGroup() {
-		CheckBoxGroup<HierarchicalEmployeeSpeciality> checkBoxGroup = new CheckBoxGroup<>("Speciality");
-		checkBoxGroup.setDescription("CheckBox Group");
-		HierarchicalEmployeeSpeciality hSpeciality1 = new HierarchicalEmployeeSpeciality(1l, "Java");
-		HierarchicalEmployeeSpeciality hSpeciality2 = new HierarchicalEmployeeSpeciality(2l, "C#");
-		HierarchicalEmployeeSpeciality hSpeciality3 = new HierarchicalEmployeeSpeciality(3l, "Javascript");
-		HierarchicalEmployeeSpeciality hSpeciality4 = new HierarchicalEmployeeSpeciality(4l, "PHP");
-
-		List<HierarchicalEmployeeSpeciality> hSpecialities = new ArrayList<>();
-		hSpecialities.add(hSpeciality1);
-		hSpecialities.add(hSpeciality2);
-		hSpecialities.add(hSpeciality3);
-		hSpecialities.add(hSpeciality4);
-
-		checkBoxGroup.setItems(hSpecialities);
-		checkBoxGroup.setItemCaptionGenerator(HierarchicalEmployeeSpeciality::getTitle);
-//		checkBoxGroup.addValueChangeListener(l -> {
-//			Notification.show("Caption: radioButtonGroup", "Description: " + l.getValue().toString(),
-//					Notification.Type.TRAY_NOTIFICATION).setDelayMsec(2000);
-//		});
-
-		binder.bind(checkBoxGroup, HierarchicalEmployee::getSpecialities, HierarchicalEmployee::setSpecialities);
-
-//		binder.forField(checkBoxGroup).bind(HierarchicalEmployee::getSpecialities, HierarchicalEmployee::setSpecialities)
-
-		return checkBoxGroup;
 	}
 
 	private Window confirmationWindow() {
@@ -383,15 +305,5 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 
 		styles.add(cssStrBuilder.toString());
 	}
-
-//	private Set<String> getPositions() {
-//		Set<String> positions = new HashSet<>();
-//
-//		positions.add("Frontend developer");
-//		positions.add("Backend developer");
-//		positions.add("Fullstack developer");
-//
-//		return positions;
-//	}
 
 }

@@ -118,6 +118,37 @@
 			<artifactId>jsclipboard</artifactId>
 			<version>1.0.12</version>
 		</dependency>
+
+
+		<!-- DEPENDENCIES FOR THE EXAMPLE PROJECT ============================================== -->
+		<!-- https://mvnrepository.com/artifact/org.vaadin/viritin -->
+		<dependency>
+			<groupId>org.vaadin</groupId>
+			<artifactId>viritin</artifactId>
+			<version>2.9</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.vaadin.teemu/switch -->
+		<dependency>
+			<groupId>org.vaadin.teemu</groupId>
+			<artifactId>switch</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.tomee.patch/bval-jsr -->
+		<!-- BeanValidationBinder cannot be used because a JSR-303 Bean Validation 
+			implementation not found on the classpath or could not be initialized. BOTH OF THE FOLLOWING -->
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-validation_1.0_spec</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.bval</groupId>
+			<artifactId>org.apache.bval.bundle</artifactId>
+			<version>0.5</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -148,6 +179,19 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<!-- https://stackoverflow.com/questions/19655184/no-compiler-is-provided-in-this-environment-perhaps-you-are-running-on-a-jre-ra -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<!-- <version>3.0.0</version> -->
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
