@@ -9,6 +9,7 @@ public class ParserTree {
 	private final Logger logger = LogManager.getLogger(this.getClass());
 
 	public Set<ItemNode> getItemsWithChildren(Set<ItemNode> rootItems, List<String> theFlatList) {
+		logger.info("getItemsWithChildren(Set<ItemNode> rootItems, List<String> theFlatList) called");
 		Set<ItemNode> itemsWithChildren = new HashSet<>();
 		for (ItemNode itemNode : rootItems) {
 			itemsWithChildren.add(getRoot(theFlatList, itemNode.getItem()));
@@ -21,8 +22,8 @@ public class ParserTree {
 	// JsonProcessingException {
 	public ItemNode getRoot(List<String> packages, String rootItem) {
 		Map<String, ItemNode> map = new HashMap<>();
-		logger.warn(rootItem);
-		logger.warn(packages.toString());
+//		logger.warn(rootItem);
+//		logger.warn(packages.toString());
 		String root = null;
 		for (String packageName : packages) {
 			String[] split = packageName.split("\\.");

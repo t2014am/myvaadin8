@@ -1,12 +1,11 @@
 package com.tamim.myvaadin8.heirarchy_dots;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class HeirarchyDotsV2 {
 	private final Logger logger = LogManager.getLogger(this.getClass());
@@ -21,12 +20,11 @@ public class HeirarchyDotsV2 {
 //		logger.warn(rootItems);
 	}
 
-	public Set<ItemNode> someMethod() {
-		logger.info("someMethod called");
+	public Set<ItemNode> getItemsWithChildren() {
+		logger.info("getItemsWithChildren called");
 		ParserTree parserTree = new ParserTree();
 		for (String str : theList) {
 			if (!str.contains(".")) {
-				logger.warn(str);
 				rootItems.add(new ItemNode(str, new HashSet<>()));
 			}
 		}

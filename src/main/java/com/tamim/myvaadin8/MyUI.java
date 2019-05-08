@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.tamim.myvaadin8.frames.BrowserFrames;
 import com.tamim.myvaadin8.grid_renderers_collection.GridRenderersHere;
 import com.tamim.myvaadin8.viritin.ViritinCrudView;
 import com.tamim.myvaadin8.windows.WindowsAndModalsView;
@@ -45,6 +46,7 @@ public class MyUI extends UI {
 		navigator.addView(Constants.WINDOWS, new WindowsAndModalsView());
 		navigator.addView(Constants.GRID_RENDERERS_COLLECTION, new GridRenderersHere());
 		navigator.addView(Constants.CRUD_VIEW, new ViritinCrudView());
+		navigator.addView(Constants.BROWSER_FRAMES, new BrowserFrames());
 
 //		final VerticalLayout layout = new VerticalLayout();
 //

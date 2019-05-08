@@ -13,10 +13,12 @@ public class InfoPage extends VerticalLayout implements View {
 		Link gridRenderersCollection = new Link("grid renderers collection!",
 				new ExternalResource("#!" + Constants.GRID_RENDERERS_COLLECTION));
 		Link crudView = new Link("crud view!", new ExternalResource("#!" + Constants.CRUD_VIEW));
+		Link browserFrames = new Link("browser frames view!", new ExternalResource("#!" + Constants.BROWSER_FRAMES));
 
 		addComponent(link);
 		addComponent(windows);
 		addComponent(gridRenderersCollection);
 		addComponent(crudView);
+		addComponent(browserFrames);
 	}
 }

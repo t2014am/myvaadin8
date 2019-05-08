@@ -1,7 +1,6 @@
 package com.tamim.myvaadin8.heirarchy_dots;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ public class HeirarchyDots {
 
 	private List<String> theList;
 	private Set<ItemNode> rootItems;
-	private Set<ItemNode> heirarchyItems = new HashSet<>();
+//	private Set<ItemNode> heirarchyItems = new HashSet<>();
 	private ItemNode itemNode;
 	private Integer maxDepth = 0;
 
@@ -45,7 +44,7 @@ public class HeirarchyDots {
 			if (!str.contains(".")) {
 				rootItems.add(new ItemNode(str, new HashSet<>()));
 			} else {
-				String[] strArray = str.split("\\.");
+//				String[] strArray = str.split("\\.");
 //				logger.info(Arrays.asList(strArray).toString());
 //                rootItems.add(new ItemNode(strArray[0], new HashSet<>()));
 			}

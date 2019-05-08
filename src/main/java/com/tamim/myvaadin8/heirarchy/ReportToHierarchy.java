@@ -19,8 +19,6 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tamim.myvaadin8.HeirarchicalView;
-
 public class ReportToHierarchy {
 	private static final Logger logger = LogManager.getLogger(ReportToHierarchy.class);
 	static Map<Integer, EmployeeNode> employees;

@@ -40,8 +40,14 @@ public class HeirarchicalView extends VerticalLayout implements View {
 
 		try {
 			String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-			String path = basepath + "\\input-employee.txt";
-			logger.error(path);
+			String path = "";
+			if (basepath.contains("\\")) {
+//				check if it is a windows or a linux system
+				path = basepath + "\\input-employee.txt";
+			} else {
+				path = basepath + "/input-employee.txt";
+			}
+			logger.info(path);
 			ReportToHierarchy.setPath(path);
 			ReportToHierarchy.readDataAndCreateMap();
 			children.clear();
@@ -112,8 +118,6 @@ public class HeirarchicalView extends VerticalLayout implements View {
 		HeirarchyDots heirarchyDots = new HeirarchyDots();
 		Set<ItemNode> itemNodeSet = heirarchyDots.getRootItems();
 
-		logger.warn(itemNodeSet.toString());
-
 		Tree<ItemNode> employeesTree = new Tree<>();
 		employeesTree.setItemCaptionGenerator(ItemNode::getItem);
 
@@ -152,7 +156,7 @@ public class HeirarchicalView extends VerticalLayout implements View {
 		theTree.setItemCaptionGenerator(ItemNode::getItem);
 		TreeData<ItemNode> employeeNodeTreeData = new TreeData<>();
 		Set<ItemNode> itemNodeSet = new HashSet<>();
-		itemNodeSet.addAll(heirarchyDotsV2.someMethod());
+		itemNodeSet.addAll(heirarchyDotsV2.getItemsWithChildren());
 		employeeNodeTreeData.addItems(itemNodeSet, ItemNode::getChildren);
 
 		TreeDataProvider<ItemNode> theTreeDataProvider = new TreeDataProvider<>(employeeNodeTreeData);
