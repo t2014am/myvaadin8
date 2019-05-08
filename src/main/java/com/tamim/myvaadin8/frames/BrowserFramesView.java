@@ -9,18 +9,30 @@ import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class BrowserFrames extends VerticalLayout implements View {
+public class BrowserFramesView extends VerticalLayout implements View {
+
+	/**
+	 * This is used to check if enter was called view a refresh or via a browser
+	 * back and again clicking. If refresh is called, it is gonna be empty. If the
+	 * back is clicked and then you return back to this view, it will not be empty.
+	 */
+	private String checkIfEnterWasAlreadyCalled = "";
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		View.super.enter(event);
 		setSizeFull();
 
-		addComponent(browserFrame());
+		if (("").equals(checkIfEnterWasAlreadyCalled)) {
+			checkIfEnterWasAlreadyCalled = "Second call";
+
+			addComponent(browserFrame());
+		}
 	}
 
 	private BrowserFrame browserFrame() {
-		BrowserFrame browser = new BrowserFrame("Browser", new ExternalResource("https://tamim-springboot.herokuapp.com/"));
+		BrowserFrame browser = new BrowserFrame("Browser",
+				new ExternalResource("https://tamim-springboot.herokuapp.com/"));
 //		browser.setWidth("600px");
 //		browser.setHeight("400px");
 

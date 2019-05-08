@@ -1,4 +1,4 @@
-package com.tamim.myvaadin8.heirarchy_dots;
+package com.tamim.myvaadin8.heirarchy.dots;
 
 import java.util.*;
 

@@ -22,28 +22,38 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
-public class GridRenderersHere extends VerticalLayout implements View {
+public class GridRenderersView extends VerticalLayout implements View {
 	private final Logger logger = LogManager.getLogger(this.getClass());
 
 	Set<ModelForCheckbox> items = getItemsFromDBDummy();
 	Set<ModelForCheckbox> itemsHardCopy = hardCopy(items);
 	private VaadinSession session;
 
+	/**
+	 * This is used to check if enter was called view a refresh or via a browser
+	 * back and again clicking. If refresh is called, it is gonna be empty. If the
+	 * back is clicked and then you return back to this view, it will not be empty.
+	 */
+	private String checkIfEnterWasAlreadyCalled = "";
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		View.super.enter(event);
-		logger.info("entered! ");
-		session = getUI().getSession();
-		session.setAttribute("items", items);
+		if (("").equals(checkIfEnterWasAlreadyCalled)) {
+			checkIfEnterWasAlreadyCalled = "Second call";
+			logger.info("entered! ");
+			session = getUI().getSession();
+			session.setAttribute("items", items);
 //		VaadinService.getCurrentRequest().getWrappedSession().setAttribute("items", items);
 
-		Button b = new Button("Open Grid Renderers");
-		b.setDescription("Open checkbox grid renderer test!");
-		b.addClickListener(l -> this.getViewComponent().getUI().addWindow(window()));
+			Button b = new Button("Open Grid Renderers");
+			b.setDescription("Open checkbox grid renderer test!");
+			b.addClickListener(l -> this.getViewComponent().getUI().addWindow(window()));
 
-		addComponent(b);
-		JSClipboardExample jsClipboardExample = new JSClipboardExample();
-		addComponent(jsClipboardExample.clipboard());
+			addComponent(b);
+			JSClipboardExample jsClipboardExample = new JSClipboardExample();
+			addComponent(jsClipboardExample.clipboard());
+		}
 	}
 
 	private Window window() {
@@ -58,7 +68,7 @@ public class GridRenderersHere extends VerticalLayout implements View {
 			logger.warn("Save");
 			logger.warn("Save");
 			logger.warn("Save");
-			
+
 //			logger.warn("itemsBeforeSave " + itemsBeforeSave.toString());
 //			logger.warn("items           " + items.toString());
 //			saveItemsToDB(items);

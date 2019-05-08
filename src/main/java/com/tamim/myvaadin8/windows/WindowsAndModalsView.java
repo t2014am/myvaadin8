@@ -1,8 +1,5 @@
 package com.tamim.myvaadin8.windows;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +9,6 @@ import com.tamim.myvaadin8.heirarchy.BuildHierarchyFromDb;
 import com.tamim.myvaadin8.model.HierarchicalEmployee;
 import com.tamim.myvaadin8.model.HierarchicalEmployeePostion;
 import com.tamim.myvaadin8.model.HierarchicalEmployeeSpeciality;
-import com.tamim.myvaadin8.service.EmployeePostionService;
 import com.tamim.myvaadin8.service.HierarchicalEmployeeService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -27,11 +23,9 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TreeGrid;
@@ -61,44 +55,55 @@ public class WindowsAndModalsView extends VerticalLayout implements View {
 
 	TreeGrid<HierarchicalEmployee> theTreeGrid;
 
+	/**
+	 * This is used to check if enter was called view a refresh or via a browser
+	 * back and again clicking. If refresh is called, it is gonna be empty. If the
+	 * back is clicked and then you return back to this view, it will not be empty.
+	 */
+	private String checkIfEnterWasAlreadyCalled = "";
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		logger.info("enter called!");
 		View.super.enter(event);
 		setSizeFull();
 
-		hierarchicalEmployeeService = new HierarchicalEmployeeService();
+		if (("").equals(checkIfEnterWasAlreadyCalled)) {
+			checkIfEnterWasAlreadyCalled = "Second call";
 
-		hierarchicalEmployee = new HierarchicalEmployee();
+			hierarchicalEmployeeService = new HierarchicalEmployeeService();
+
+			hierarchicalEmployee = new HierarchicalEmployee();
 //		binder.setBean(hierarchicalEmployee);
 
-		someInPageStyling();
+			someInPageStyling();
 
-		Button newItem = new Button("Add new");
-		newItem.addClickListener(l -> {
-			HierarchicalEmployee hierarchicalEmployee = new HierarchicalEmployee();
+			Button newItem = new Button("Add new");
+			newItem.addClickListener(l -> {
+				HierarchicalEmployee hierarchicalEmployee = new HierarchicalEmployee();
 //			binder.setBean(hierarchicalEmployee);
-			w = addOrEditItem(null);
-			this.getViewComponent().getUI().addWindow(w);
-			logger.warn("Add new btn clicked! ");
-		});
-		TreeGrid<HierarchicalEmployee> theTreeGrid = theTreeGrid();
-		addComponent(newItem);
-		addComponent(theTreeGrid);
-		setExpandRatio(theTreeGrid, 1F);
+				w = addOrEditItem(null);
+				this.getViewComponent().getUI().addWindow(w);
+				logger.warn("Add new btn clicked! ");
+			});
+			TreeGrid<HierarchicalEmployee> theTreeGrid = theTreeGrid();
+			addComponent(newItem);
+			addComponent(theTreeGrid);
+			setExpandRatio(theTreeGrid, 1F);
 
-		binder.addStatusChangeListener(l -> {
+			binder.addStatusChangeListener(l -> {
 //			logger.warn(l.getBinder().hasChanges() + " " + l.getBinder().getBean());
 //			logger.warn(hierarchicalEmployee.equals(l.getBinder().getBean()));
 //			logger.warn(l.getBinder().getBean());
 //			logger.warn(hierarchicalEmployee);
 
-			if (binder.hasChanges()) {
+				if (binder.hasChanges()) {
 //				logger.warn(binder.hasChanges() + " ");
 //				logger.warn(binder.getBean().getLastName() + " ");
-			}
+				}
 
-		});
+			});
+		}
 	}
 
 	private TreeGrid<HierarchicalEmployee> theTreeGrid() {

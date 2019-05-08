@@ -49,6 +49,13 @@ public class ViritinCrudView extends VerticalLayout implements View {
 
 	private List<HierarchicalEmployee> listOfAllEmployees = null;
 
+	/**
+	 * This is used to check if enter was called view a refresh or via a browser
+	 * back and again clicking. If refresh is called, it is gonna be empty. If the
+	 * back is clicked and then you return back to this view, it will not be empty.
+	 */
+	private String checkIfEnterWasAlreadyCalled = "";
+
 	public ViritinCrudView() {
 		logger.info("CrudView called! ");
 //		this.eventBus = b;
@@ -80,7 +87,11 @@ public class ViritinCrudView extends VerticalLayout implements View {
 	public void enter(ViewChangeEvent event) {
 ////      DisclosurePanel aboutBox = new DisclosurePanel("Spring Boot JPA CRUD example with Vaadin UI", new RichText().withMarkDownResource("/welcome.md"));
 ////		setContent(new MVerticalLayout(new MHorizontalLayout(filterByName, addNew, edit, delete), list).expand(list));
-		init();
+		if (("").equals(checkIfEnterWasAlreadyCalled)) {
+			checkIfEnterWasAlreadyCalled = "Second call";
+
+			init();
+		}
 	}
 
 	protected void adjustActionButtonState() {

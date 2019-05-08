@@ -1,4 +1,4 @@
-package com.tamim.myvaadin8;
+package com.tamim.myvaadin8.heirarchy;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,11 +9,9 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tamim.myvaadin8.heirarchy.EmployeeNode;
-import com.tamim.myvaadin8.heirarchy.ReportToHierarchy;
-import com.tamim.myvaadin8.heirarchy_dots.HeirarchyDots;
-import com.tamim.myvaadin8.heirarchy_dots.HeirarchyDotsV2;
-import com.tamim.myvaadin8.heirarchy_dots.ItemNode;
+import com.tamim.myvaadin8.heirarchy.dots.HeirarchyDots;
+import com.tamim.myvaadin8.heirarchy.dots.HeirarchyDotsV2;
+import com.tamim.myvaadin8.heirarchy.dots.ItemNode;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.navigator.View;
@@ -33,48 +31,57 @@ public class HeirarchicalView extends VerticalLayout implements View {
 	private List<EmployeeNode> rootItems = new ArrayList<>();
 	private List<EmployeeNode> children = new ArrayList<>();
 
+	/**
+	 * This is used to check if enter was called view a refresh or via a browser
+	 * back and again clicking. If refresh is called, it is gonna be empty. If the
+	 * back is clicked and then you return back to this view, it will not be empty.
+	 */
+	private String checkIfEnterWasAlreadyCalled = "";
+
 	@Override
 	public void enter(ViewChangeListener.ViewChangeEvent event) {
 		setSizeFull();
 		setMargin(true);
-
-		try {
-			String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-			String path = "";
-			if (basepath.contains("\\")) {
+		if (("").equals(checkIfEnterWasAlreadyCalled)) {
+			checkIfEnterWasAlreadyCalled = "Second call";
+			try {
+				String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+				String path = "";
+				if (basepath.contains("\\")) {
 //				check if it is a windows or a linux system
-				path = basepath + "\\input-employee.txt";
-			} else {
-				path = basepath + "/input-employee.txt";
-			}
-			logger.info(path);
-			ReportToHierarchy.setPath(path);
-			ReportToHierarchy.readDataAndCreateMap();
-			children.clear();
-			rootItems = ReportToHierarchy.getRootItems();
-			for (EmployeeNode e : rootItems) {
-				ReportToHierarchy.buildHierarchyTree(1, e);
-			}
-			for (EmployeeNode e : rootItems) {
+					path = basepath + "\\input-employee.txt";
+				} else {
+					path = basepath + "/input-employee.txt";
+				}
+				logger.info(path);
+				ReportToHierarchy.setPath(path);
+				ReportToHierarchy.readDataAndCreateMap();
+				children.clear();
+				rootItems = ReportToHierarchy.getRootItems();
+				for (EmployeeNode e : rootItems) {
+					ReportToHierarchy.buildHierarchyTree(1, e);
+				}
+				for (EmployeeNode e : rootItems) {
 //                children.addAll(ReportToHierarchy.buildHierarchyTree(e));
-				children.addAll(ReportToHierarchy.getSubordinatesById(e.getId()));
+					children.addAll(ReportToHierarchy.getSubordinatesById(e.getId()));
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		HorizontalLayout h = new HorizontalLayout();
-		h.addComponent(firstTreeEmployees());
-		h.addComponent(secondTree());
-		h.addComponent(thirdTree());
-		h.setSizeFull();
+			HorizontalLayout h = new HorizontalLayout();
+			h.addComponent(firstTreeEmployees());
+			h.addComponent(secondTree());
+			h.addComponent(thirdTree());
+			h.setSizeFull();
 
-		Label l = new Label("Hierarchical data processinggggggggggggg");
-		l.addStyleNames("v-margin-bottom", "v-button-huge");
-		l.setDescription("just a heading, what else do you want? ");
-		addComponent(l);
-		setComponentAlignment(l, Alignment.TOP_CENTER);
-		addComponent(h);
-		setExpandRatio(h, 1F);
+			Label l = new Label("Hierarchical data processinggggggggggggg");
+			l.addStyleNames("v-margin-bottom", "v-button-huge");
+			l.setDescription("just a heading, what else do you want? ");
+			addComponent(l);
+			setComponentAlignment(l, Alignment.TOP_CENTER);
+			addComponent(h);
+			setExpandRatio(h, 1F);
+		}
 	}
 
 	@Override

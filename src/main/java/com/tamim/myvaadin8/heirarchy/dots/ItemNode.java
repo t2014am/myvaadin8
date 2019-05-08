@@ -1,4 +1,4 @@
-package com.tamim.myvaadin8.heirarchy_dots;
+package com.tamim.myvaadin8.heirarchy.dots;
 
 import java.io.Serializable;
 import java.util.HashSet;

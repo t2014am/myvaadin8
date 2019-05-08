@@ -16,6 +16,7 @@
 ##### In Page Styles
 ##### Bindings
 ##### Confirmation Window
+##### Browser Frames (iFrame)
 
 ###	Java
 ##### Hierarchical Data
