@@ -1,4 +1,4 @@
-package com.tamim.myvaadin8.viritin;
+package com.tamim.myvaadin8.addons.vritin;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

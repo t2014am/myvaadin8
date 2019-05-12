@@ -1,4 +1,4 @@
-package com.tamim.myvaadin8.viritin;
+package com.tamim.myvaadin8.addons.vritin;
 
 import java.util.ArrayList;
 import java.util.List;

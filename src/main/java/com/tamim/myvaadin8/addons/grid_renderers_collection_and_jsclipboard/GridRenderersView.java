@@ -1,4 +1,4 @@
-package com.tamim.myvaadin8.grid_renderers_collection;
+package com.tamim.myvaadin8.addons.grid_renderers_collection_and_jsclipboard;
 
 import java.util.HashSet;
 import java.util.Iterator;
