@@ -16,6 +16,7 @@ public class InfoPage extends VerticalLayout implements View {
 		Link browserFrames = new Link("browser frames view!", new ExternalResource("#!" + Constants.BROWSER_FRAMES));
 		Link exporter = new Link("exporter view!", new ExternalResource("#!" + Constants.EXPORTER));
 		Link pdfViewer = new Link("pdf viewer!", new ExternalResource("#!" + Constants.PDF_VIEWER));
+		Link tabsView = new Link(Constants.TABS_VIEW.toString(), new ExternalResource("#!" + Constants.TABS_VIEW));
 
 		addComponent(link);
 		addComponent(windows);
@@ -24,5 +25,6 @@ public class InfoPage extends VerticalLayout implements View {
 		addComponent(browserFrames);
 		addComponent(exporter);
 		addComponent(pdfViewer);
+		addComponent(tabsView);
 	}
 }

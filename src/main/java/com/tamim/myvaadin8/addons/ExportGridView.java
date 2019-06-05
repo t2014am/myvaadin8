@@ -21,7 +21,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class ExportGrid extends VerticalLayout implements View {
+public class ExportGridView extends VerticalLayout implements View {
 	private final Logger logger = LogManager.getLogger(this.getClass());
 
 	private Grid<HierarchicalEmployee> mGridEmployees = new Grid<>(HierarchicalEmployee.class);
@@ -30,18 +30,8 @@ public class ExportGrid extends VerticalLayout implements View {
 	public void enter(ViewChangeEvent event) {
 		logger.info("enter called! ");
 		View.super.enter(event);
-		setSizeFull();
 
-		BuildHierarchyFromDb b = new BuildHierarchyFromDb();
-		ArrayList<HierarchicalEmployee> listOfAllEmployees = new ArrayList<>(b.getEmployeesFlatWithSupervisors());
-
-		mGridEmployees.setColumns("firstName", "lastName", "supervisorId", "gender");
-		mGridEmployees.setItems(listOfAllEmployees);
-		mGridEmployees.setSizeFull();
-
-		addComponent(exportButtons());
-		addComponent(mGridEmployees);
-		setExpandRatio(mGridEmployees, 1f);
+		initTheMainLayout();
 	}
 
 	private HorizontalLayout exportButtons() {
@@ -74,6 +64,27 @@ public class ExportGrid extends VerticalLayout implements View {
 				return Exporter.exportAsCSV(mGridEmployees);
 			}
 		}, "csv.csv");
+	}
+
+	private void initTheMainLayout() {
+		setSizeFull();
+
+		BuildHierarchyFromDb b = new BuildHierarchyFromDb();
+		ArrayList<HierarchicalEmployee> listOfAllEmployees = new ArrayList<>(b.getEmployeesFlatWithSupervisors());
+
+		mGridEmployees.setColumns("firstName", "lastName", "supervisorId", "gender");
+		mGridEmployees.setItems(listOfAllEmployees);
+		mGridEmployees.setSizeFull();
+
+		addComponent(exportButtons());
+		addComponent(mGridEmployees);
+		setExpandRatio(mGridEmployees, 1f);
+	}
+
+	public ExportGridView getView() {
+		logger.warn("getView called ");
+		initTheMainLayout();
+		return this;
 	}
 
 }

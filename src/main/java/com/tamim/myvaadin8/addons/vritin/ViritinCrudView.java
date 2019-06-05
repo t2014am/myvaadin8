@@ -62,7 +62,7 @@ public class ViritinCrudView extends VerticalLayout implements View {
 	}
 
 	@PostConstruct
-	void init() {
+	void initTheMainLayout() {
 		setSizeFull();
 		setMargin(false);
 		filterByName.setWidth("300px");
@@ -90,7 +90,7 @@ public class ViritinCrudView extends VerticalLayout implements View {
 		if (("").equals(checkIfEnterWasAlreadyCalled)) {
 			checkIfEnterWasAlreadyCalled = "Second call";
 
-			init();
+			initTheMainLayout();
 		}
 	}
 
@@ -187,4 +187,10 @@ public class ViritinCrudView extends VerticalLayout implements View {
 //		listEntities();
 //		personForm.closePopup();
 //	}
+
+	public ViritinCrudView getView() {
+		logger.warn("getView called ");
+		initTheMainLayout();
+		return this;
+	}
 }

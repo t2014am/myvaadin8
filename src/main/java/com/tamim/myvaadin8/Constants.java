@@ -8,4 +8,5 @@ public class Constants {
 	protected static final String BROWSER_FRAMES = "browser_frames";
 	protected static final String EXPORTER = "exporter";
 	protected static final String PDF_VIEWER = "pdf_viewer";
+	protected static final String TABS_VIEW = "tabs_view";
 }

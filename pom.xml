@@ -241,6 +241,15 @@
 				<version>${jetty.plugin.version}</version>
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
+					<webApp>
+						<!--NOT YET TESTED!!! -->
+						<!--To let the static resources be read automatically after edit, just 
+							refresh the browser -->
+						<!--https://www.eclipse.org/jetty/documentation/current/troubleshooting-locked-files-on-windows.html -->
+						<!--<contextPath>/shinchan</contextPath> -->
+						<!-- <_initParams> <org.eclipse.jetty.servlet.Default.useFileMappedBuffer>false 
+							</org.eclipse.jetty.servlet.Default.useFileMappedBuffer> </_initParams> -->
+					</webApp>
 				</configuration>
 			</plugin>
 
@@ -269,7 +278,32 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<!--NOT YET TESTED!!! -->
+				<!--It is supposed to open the page after jetty is ready! -->
+				<!--https://stackoverflow.com/questions/12726184/how-to-open-a-browser-with-a-url-from-maven-build -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>Run URL in system browser.</id>
+						<phase>install</phase>
+						<configuration>
+							<target>
+								<exec executable="start" vmlauncher="false">
+									<arg line="http://localhost:8080" />
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
 	</build>
 
 	<profiles>

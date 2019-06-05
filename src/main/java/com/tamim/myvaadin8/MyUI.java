@@ -6,12 +6,13 @@ import javax.servlet.annotation.WebServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.tamim.myvaadin8.addons.ExportGrid;
+import com.tamim.myvaadin8.addons.ExportGridView;
 import com.tamim.myvaadin8.addons.PdfViewerView;
 import com.tamim.myvaadin8.addons.grid_renderers_collection_and_jsclipboard.GridRenderersView;
 import com.tamim.myvaadin8.addons.vritin.ViritinCrudView;
 import com.tamim.myvaadin8.frames.BrowserFramesView;
 import com.tamim.myvaadin8.heirarchy.HeirarchicalView;
+import com.tamim.myvaadin8.tabs.TabsView;
 import com.tamim.myvaadin8.windows.WindowsAndModalsView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -50,8 +51,9 @@ public class MyUI extends UI {
 		navigator.addView(Constants.GRID_RENDERERS_COLLECTION, new GridRenderersView());
 		navigator.addView(Constants.CRUD_VIEW, new ViritinCrudView());
 		navigator.addView(Constants.BROWSER_FRAMES, new BrowserFramesView());
-		navigator.addView(Constants.EXPORTER, new ExportGrid());
+		navigator.addView(Constants.EXPORTER, new ExportGridView());
 		navigator.addView(Constants.PDF_VIEWER, new PdfViewerView());
+		navigator.addView(Constants.TABS_VIEW, new TabsView());
 
 //		final VerticalLayout layout = new VerticalLayout();
 //

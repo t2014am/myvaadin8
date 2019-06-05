@@ -1,7 +1,6 @@
 package com.tamim.myvaadin8.addons.grid_renderers_collection_and_jsclipboard;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +10,6 @@ import org.vaadin.grid.cellrenderers.editoraware.CheckboxRenderer;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.window.WindowMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -27,7 +25,6 @@ public class GridRenderersView extends VerticalLayout implements View {
 
 	Set<ModelForCheckbox> items = getItemsFromDBDummy();
 	Set<ModelForCheckbox> itemsHardCopy = hardCopy(items);
-	private VaadinSession session;
 
 	/**
 	 * This is used to check if enter was called view a refresh or via a browser
@@ -40,19 +37,8 @@ public class GridRenderersView extends VerticalLayout implements View {
 	public void enter(ViewChangeEvent event) {
 		View.super.enter(event);
 		if (("").equals(checkIfEnterWasAlreadyCalled)) {
-			checkIfEnterWasAlreadyCalled = "Second call";
-			logger.info("entered! ");
-			session = getUI().getSession();
-			session.setAttribute("items", items);
-//		VaadinService.getCurrentRequest().getWrappedSession().setAttribute("items", items);
 
-			Button b = new Button("Open Grid Renderers");
-			b.setDescription("Open checkbox grid renderer test!");
-			b.addClickListener(l -> this.getViewComponent().getUI().addWindow(window()));
-
-			addComponent(b);
-			JSClipboardExample jsClipboardExample = new JSClipboardExample();
-			addComponent(jsClipboardExample.clipboard());
+			initTheMainLayout();
 		}
 	}
 
@@ -74,7 +60,7 @@ public class GridRenderersView extends VerticalLayout implements View {
 //			saveItemsToDB(items);
 			items.clear();
 			items = hardCopy(itemsHardCopy);
-			session.setAttribute("items", items);
+//			session.setAttribute("items", items);
 //			logger.warn(session.getAttribute("items"));
 
 			w.close();
@@ -159,11 +145,35 @@ public class GridRenderersView extends VerticalLayout implements View {
 		return hardCopy;
 	}
 
-	private Set<ModelForCheckbox> getItemsBeforeSaveFromSession() {
-		return (Set<ModelForCheckbox>) session.getAttribute("itemsBeforeSave");
+//	private Set<ModelForCheckbox> getItemsBeforeSaveFromSession() {
+//		return (Set<ModelForCheckbox>) session.getAttribute("itemsBeforeSave");
+//	}
+//
+//	private Set<ModelForCheckbox> getItemsFromDBDummyFromSession() {
+//		return (Set<ModelForCheckbox>) session.getAttribute("items");
+//	}
+
+	private void initTheMainLayout() {
+		checkIfEnterWasAlreadyCalled = "Second call";
+		logger.info("entered! ");
+		// TODO: SO THIS session is not used, hence not needed!
+//		VaadinSession session = getUI().getSession();
+//		session.setAttribute("items", items);
+		// VaadinService.getCurrentRequest().getWrappedSession().setAttribute("items",
+		// items);
+
+		Button b = new Button("Open Grid Renderers");
+		b.setDescription("Open checkbox grid renderer test!");
+		b.addClickListener(l -> this.getViewComponent().getUI().addWindow(window()));
+
+		addComponent(b);
+		JSClipboardExample jsClipboardExample = new JSClipboardExample();
+		addComponent(jsClipboardExample.clipboard());
 	}
 
-	private Set<ModelForCheckbox> getItemsFromDBDummyFromSession() {
-		return (Set<ModelForCheckbox>) session.getAttribute("items");
+	public GridRenderersView getView() {
+		logger.warn("getView called ");
+		initTheMainLayout();
+		return this;
 	}
 }
