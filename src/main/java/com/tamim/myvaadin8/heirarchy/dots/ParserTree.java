@@ -1,12 +1,16 @@
 package com.tamim.myvaadin8.heirarchy.dots;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ParserTree {
-	private final Logger logger = LogManager.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(ParserTree.class);
 
 	public Set<ItemNode> getItemsWithChildren(Set<ItemNode> rootItems, List<String> theFlatList) {
 		logger.info("getItemsWithChildren(Set<ItemNode> rootItems, List<String> theFlatList) called");

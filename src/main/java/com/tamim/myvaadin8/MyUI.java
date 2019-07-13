@@ -3,8 +3,11 @@ package com.tamim.myvaadin8;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tamim.myvaadin8.addons.ExportGridView;
 import com.tamim.myvaadin8.addons.PdfViewerView;
@@ -73,11 +76,15 @@ public class MyUI extends UI {
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
 	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet implements SessionInitListener, SessionDestroyListener {
-		private final Logger logger = LogManager.getLogger(this.getClass());
+//		private final Logger logger = LogManager.getLogger(this.getClass());
+		private static Logger logger = LoggerFactory.getLogger(MyUIServlet.class);
 
 		@Override
 		protected void servletInitialized() throws ServletException {
 			super.servletInitialized();
+
+			logger.warn("servletInitialized");
+
 			getService().addSessionInitListener(this);
 			getService().addSessionDestroyListener(this);
 		}
@@ -91,7 +98,6 @@ public class MyUI extends UI {
 		@Override
 		public void sessionInit(SessionInitEvent event) throws ServiceException {
 			logger.info("SessionInit called!");
-
 		}
 	}
 }

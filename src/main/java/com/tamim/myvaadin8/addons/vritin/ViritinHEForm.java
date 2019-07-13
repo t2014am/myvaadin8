@@ -1,7 +1,7 @@
 package com.tamim.myvaadin8.addons.vritin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.form.AbstractForm;
 import org.vaadin.viritin.layouts.MFormLayout;
@@ -26,7 +26,7 @@ public class ViritinHEForm extends AbstractForm<HierarchicalEmployee> {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Logger logger = LogManager.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(ViritinCrudView.class);
 
 //	EventBus.UIEventBus eventBus;
 	HierarchicalEmployeeService repo = new HierarchicalEmployeeService();

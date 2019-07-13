@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,7 +17,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.tamim.myvaadin8.model.HierarchicalEmployee;
 
 public class HierarchicalEmployeeService implements ServiceInterface<HierarchicalEmployee> {
-	private final Logger logger = LogManager.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(HierarchicalEmployeeService.class);
 
 	private String restEndpoint = "https://tamim-springboot.herokuapp.com/rest_api/hierarchical_employees/";
 

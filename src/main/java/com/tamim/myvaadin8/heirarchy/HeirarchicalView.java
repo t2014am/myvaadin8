@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tamim.myvaadin8.heirarchy.dots.HeirarchyDots;
 import com.tamim.myvaadin8.heirarchy.dots.HeirarchyDotsV2;
@@ -27,7 +27,8 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class HeirarchicalView extends VerticalLayout implements View {
-	private static final Logger logger = LogManager.getLogger(HeirarchicalView.class);
+	private static Logger logger = LoggerFactory.getLogger(HeirarchicalView.class);
+
 	private List<EmployeeNode> rootItems = new ArrayList<>();
 	private List<EmployeeNode> children = new ArrayList<>();
 

@@ -3,8 +3,8 @@ package com.tamim.myvaadin8.addons.grid_renderers_collection_and_jsclipboard;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.grid.cellrenderers.editable.BooleanSwitchRenderer;
 import org.vaadin.grid.cellrenderers.editoraware.CheckboxRenderer;
 
@@ -21,8 +21,8 @@ import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
 public class GridRenderersView extends VerticalLayout implements View {
-	private final Logger logger = LogManager.getLogger(this.getClass());
-
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	Set<ModelForCheckbox> items = getItemsFromDBDummy();
 	Set<ModelForCheckbox> itemsHardCopy = hardCopy(items);
 

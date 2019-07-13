@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.AccessLevel;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,7 +27,7 @@ import lombok.AccessLevel;
 @Getter
 @Setter
 public class HierarchicalEmployee implements Serializable {
-	private final Logger logger = LogManager.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(HierarchicalEmployee.class);
 
 	private Long employeeId;
 	private String firstName;

@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.ConfirmButton;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
@@ -28,7 +28,7 @@ public class ViritinCrudView extends VerticalLayout implements View {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Logger logger = LogManager.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(ViritinCrudView.class);
 
 	final int PAGESIZE = 45;
 	HierarchicalEmployeeService repo = new HierarchicalEmployeeService();

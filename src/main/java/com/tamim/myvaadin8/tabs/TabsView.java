@@ -1,7 +1,7 @@
 package com.tamim.myvaadin8.tabs;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tamim.myvaadin8.addons.ExportGridView;
 import com.tamim.myvaadin8.addons.grid_renderers_collection_and_jsclipboard.GridRenderersView;
@@ -18,8 +18,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class TabsView extends VerticalLayout implements View {
+	private static Logger logger = LoggerFactory.getLogger(TabsView.class);
 
-	private final Logger logger = LogManager.getLogger(this.getClass());
 	private String checkIfEnterWasAlreadyCalled = "";
 
 	@Override

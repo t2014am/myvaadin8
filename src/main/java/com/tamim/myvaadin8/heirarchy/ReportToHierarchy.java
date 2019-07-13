@@ -16,11 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReportToHierarchy {
-	private static final Logger logger = LogManager.getLogger(ReportToHierarchy.class);
+	private static Logger logger = LoggerFactory.getLogger(ReportToHierarchy.class);
+
 	static Map<Integer, EmployeeNode> employees;
 	static List<EmployeeNode> rootItems;
 	static List<EmployeeNode> deepestChildren = new ArrayList<>();

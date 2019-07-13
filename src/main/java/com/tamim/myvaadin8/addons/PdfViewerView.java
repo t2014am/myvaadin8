@@ -2,8 +2,8 @@ package com.tamim.myvaadin8.addons;
 
 import java.io.InputStream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -15,7 +15,7 @@ import com.whitestein.vaadin.widgets.wtpdfviewer.WTPdfViewer;
 
 @SuppressWarnings("serial")
 public class PdfViewerView extends VerticalLayout implements View {
-	private final Logger logger = LogManager.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(PdfViewerView.class);
 
 	@Override
 	public void enter(ViewChangeEvent event) {
